@@ -295,7 +295,11 @@ ms-dns 8.8.4.4</code></pre></p></li>
 
 <pre><code>  sudo iptables -P FORWARD ACCEPT
   sudo iptables -t nat -A POSTROUTING -s 192.168.0.0/24 -o eth0 -j MASQUERADE
-</code></pre></li>
+</code></pre>
+
+<p>  保存iptables规则</p>
+
+<p>  <code>sudo service iptables save</code></p></li>
 </ul>
 </li>
 <li><h4>启动</h4>

@@ -4,7 +4,7 @@
   <title><![CDATA[Egret's Blog]]></title>
   <link href="http://lotusk.github.io/atom.xml" rel="self"/>
   <link href="http://lotusk.github.io/"/>
-  <updated>2015-02-02T21:44:18+08:00</updated>
+  <updated>2015-02-02T21:55:13+08:00</updated>
   <id>http://lotusk.github.io/</id>
   <author>
     <name><![CDATA[Egret]]></name>
@@ -200,7 +200,11 @@ ms-dns 8.8.4.4</code></pre></p></li>
 
 <pre><code>  sudo iptables -P FORWARD ACCEPT
   sudo iptables -t nat -A POSTROUTING -s 192.168.0.0/24 -o eth0 -j MASQUERADE
-</code></pre></li>
+</code></pre>
+
+<p>  保存iptables规则</p>
+
+<p>  <code>sudo service iptables save</code></p></li>
 </ul>
 </li>
 <li><h4>启动</h4>
