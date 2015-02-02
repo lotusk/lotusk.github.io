@@ -9,8 +9,9 @@
   <meta name="author" content="Egret">
 
   
-  <meta name="description" content="HelloWorld
-">
+  <meta name="description" content="在ec2中配制vpn 随着gfw的持续升级,vpn已经慢慢的变的越来越不可或缺,在这里记录下用免费的ec2服务器自己搭建vpn的过程. 注册免费ec2账号,绑定信誉卡,建立免费的instance,本人选择的是rehl7.
+在控制台安全组inbound里将1723端口开放.
+安装pptp &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,7 +89,63 @@
   </header>
 
 
-<div class="entry-content"><h1>HelloWorld</h1>
+<div class="entry-content"><h2>在ec2中配制vpn</h2>
+
+<hr />
+
+<p>随着gfw的持续升级,vpn已经慢慢的变的越来越不可或缺,在这里记录下用免费的ec2服务器自己搭建vpn的过程.</p>
+
+<ul>
+<li><h3>注册免费ec2账号,绑定信誉卡,建立免费的instance,本人选择的是<strong>rehl7</strong>.</h3></li>
+<li><h3>在控制台安全组inbound里将<strong>1723</strong>端口开放.</h3></li>
+<li><h3>安装pptp</h3>
+
+<ul>
+<li><h4>修改yum源(<em>注意千万不要导入rehl6或者之前的源</em>)</h4>
+
+<ul>
+<li><code>vi /etc/yum.repos.d/epel.repo</code></li>
+</ul>
+
+
+<p>  <pre><code>[epel]
+name=Extra Packages for Enterprise Linux 7 - $basearch
+#baseurl=<a href="http://download.fedoraproject.org/pub/epel/7/$basearch">http://download.fedoraproject.org/pub/epel/7/$basearch</a>
+mirrorlist=<a href="https://mirrors.fedoraproject.org/metalink?repo=epel-7&amp;arch=$basearch">https://mirrors.fedoraproject.org/metalink?repo=epel-7&amp;arch=$basearch</a>
+failovermethod=priority
+enabled=1
+gpgcheck=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+[epel-debuginfo]
+name=Extra Packages for Enterprise Linux 7 - $basearch - Debug
+#baseurl=<a href="http://download.fedoraproject.org/pub/epel/7/$basearch/debug">http://download.fedoraproject.org/pub/epel/7/$basearch/debug</a>
+mirrorlist=<a href="https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&amp;arch=$basearch">https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&amp;arch=$basearch</a>
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+gpgcheck=1
+[epel-source]
+name=Extra Packages for Enterprise Linux 7 - $basearch - Source
+#baseurl=<a href="http://download.fedoraproject.org/pub/epel/7/SRPMS">http://download.fedoraproject.org/pub/epel/7/SRPMS</a>
+mirrorlist=<a href="https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&amp;arch=$basearch">https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&amp;arch=$basearch</a>
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+gpgcheck=1
+  </code></pre></p></li>
+<li><h4>更新yum缓存 <code>yum makecache</code></h4></li>
+<li><h4>安装组件</h4>
+
+<ul>
+<li>安装iptables、ppp、pptpd</li>
+</ul>
+
+
+<p>  <code>yum install ppp iptables pptpd</code></p></li>
+</ul>
+</li>
+</ul>
+
 </div>
 
 
