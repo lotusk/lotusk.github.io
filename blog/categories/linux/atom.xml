@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Linux | Egret's Blog]]></title>
+  <link href="http://lotusk.github.io/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://lotusk.github.io/"/>
+  <updated>2015-02-02T21:44:18+08:00</updated>
+  <id>http://lotusk.github.io/</id>
+  <author>
+    <name><![CDATA[Egret]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Swapfile in Ec2]]></title>
+    <link href="http://lotusk.github.io/blog/2015/02/02/swapfile-in-ec2/"/>
+    <updated>2015-02-02T21:21:30+08:00</updated>
+    <id>http://lotusk.github.io/blog/2015/02/02/swapfile-in-ec2</id>
+    <content type="html"><![CDATA[<h2>在ec2中增加swap</h2>
+
+<hr />
+
+<p>用免费的ec2搭建了一个演示平台使用rehl7,1g的内存其他还好,但就是有一个问题,当我使用play时,一编译scala,这可怜的机器就死机了!!!!!. 增加swap已经是必须的了.</p>
+
+<ul>
+<li><h3>使用swapfile</h3>
+
+  在ec2中本来只有10g左右的硬盘分区之类都太麻烦了,不如直接使用swapfile,将一个文件做为swap
+
+<ul>
+<li>参照 arch linux的文档 <a href="https://wiki.archlinux.org/index.php/swap">swap-archlinux</a></li>
+<li><h5>create file</h5>
+
+<p>  <code>fallocate -l 1024M /swapfile</code></p>
+
+<p>  使用文档中的<code>dd if=/dev/zero of=/swapfile bs=1M count=512</code>在本人这里是失败的(这一步可以成功,后面失败,虽然文档上说两个都可以)</p></li>
+<li><h5>Set the right permissions</h5>
+
+<p>  <code>chmod 600 /swapfile</code></p></li>
+<li><h5>Format file to swap</h5>
+
+<p>  <code>mkswap /swapfile</code></p></li>
+<li><h5>Activate the swap file</h5>
+
+<p>  <code>swapon /swapfile</code></p></li>
+<li><h5>Finally, edit fstab to add an entry for the swap file</h5>
+
+<pre><code>  /etc/fstab
+  -------------------------------------------------------------
+  /swapfile none swap defaults 0 0
+</code></pre></li>
+</ul>
+</li>
+<li><h3>删除swap</h3>
+
+<pre><code>  swapoff -a
+  rm -f /swapfile
+</code></pre></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
