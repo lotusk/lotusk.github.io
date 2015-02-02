@@ -4,7 +4,7 @@
   <title><![CDATA[Egret's Blog]]></title>
   <link href="http://lotusk.github.io/atom.xml" rel="self"/>
   <link href="http://lotusk.github.io/"/>
-  <updated>2015-02-02T20:39:13+08:00</updated>
+  <updated>2015-02-02T20:45:44+08:00</updated>
   <id>http://lotusk.github.io/</id>
   <author>
     <name><![CDATA[Egret]]></name>
@@ -18,7 +18,7 @@
     <link href="http://lotusk.github.io/blog/2015/02/02/vpn-in-ec2/"/>
     <updated>2015-02-02T15:34:52+08:00</updated>
     <id>http://lotusk.github.io/blog/2015/02/02/vpn-in-ec2</id>
-    <content type="html"><![CDATA[<h2>在ec2中配制vpn</h2>
+    <content type="html"><![CDATA[<h2>在ec2中搭建vpn服务</h2>
 
 <hr />
 
