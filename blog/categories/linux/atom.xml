@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | Egret's Blog]]></title>
   <link href="http://lotusk.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://lotusk.github.io/"/>
-  <updated>2015-02-02T21:55:13+08:00</updated>
+  <updated>2015-02-03T09:01:06+08:00</updated>
   <id>http://lotusk.github.io/</id>
   <author>
     <name><![CDATA[Egret]]></name>
@@ -33,9 +33,9 @@
 <li>参照 arch linux的文档 <a href="https://wiki.archlinux.org/index.php/swap">swap-archlinux</a></li>
 <li><h5>create file</h5>
 
-<p>  <code>fallocate -l 1024M /swapfile</code></p>
+<p>  <code>dd if=/dev/zero of=/swapfile bs=1M count=1024</code></p>
 
-<p>  使用文档中的<code>dd if=/dev/zero of=/swapfile bs=1M count=512</code>在本人这里是失败的(这一步可以成功,后面失败,虽然文档上说两个都可以)</p></li>
+<p>  使用文档中的<code>fallocate -l 1024M /swapfile</code>在本人这里是失败的(这一步可以成功,后面失败,虽然文档上说两个都可以)</p></li>
 <li><h5>Set the right permissions</h5>
 
 <p>  <code>chmod 600 /swapfile</code></p></li>
