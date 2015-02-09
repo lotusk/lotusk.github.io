@@ -9,7 +9,7 @@
   <meta name="author" content="Egret">
 
   
-  <meta name="description" content="在ec2中增加swap 用免费的ec2搭建了一个演示平台使用rehl7,1g的内存其他还好,但就是有一个问题,当我使用play时,一编译scala,这可怜的机器就死机了!!!!!. 增加swap已经是必须的了. 使用swapfile 在ec2中本来只有10g左右的硬盘分区之类都太麻烦了, &hellip;">
+  <meta name="description" content="在playframework中添加java.util.Date的QueryStringBindable 为了在play中让直接支持Date类型,比如 def setLastTime(date:Date)=Action{} GET /user/setLastTime controllers. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,70 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/02/09/zai-playframeworkzhong-tian-jia-java-dot-util-dot-datede-querystringbindable/">在playframework中添加java.util.Date的QueryStringBindable</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-02-09T20:09:57+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>8:09 pm</span></time>
+        
+	
+          | <a href="/blog/2015/02/09/zai-playframeworkzhong-tian-jia-java-dot-util-dot-datede-querystringbindable/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>在playframework中添加java.util.Date的QueryStringBindable</h2>
+
+<hr />
+
+<h3>为了在play中让直接支持Date类型,比如</h3>
+
+<p><code>def setLastTime(date:Date)=Action{}</code></p>
+
+<p><code>GET    /user/setLastTime controllers.Application(date:java.util.Date)</code></p>
+
+<p>这时需要为Date类型添加QueryStringBindable[Date]的隐式转换,好先完成该转换代码.</p>
+
+<pre><code>object Binder{
+  implicit def queryDateBinder(implicit stringBinder: QueryStringBindable[String]) = new QueryStringBindable[Date] {
+    val sdf = new SimpleDateFormat("yyyy-MM-dd")
+
+    override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Date]] = stringBinder.bind(key, params).map {
+      strDate =>
+        strDate.right.map(sdf.parse(_))
+    }
+
+    override def unbind(key: String, date: Date): String = stringBinder.unbind(key , sdf.format(date))
+  }
+}</code></pre>
+
+
+<p>之前以为直接放在controller的pakcage object里就ok了,结果出错了才意识到该隐式转换是在play框架中调用的,所以能放隐式转换的地方只有一个方 java.util.Date的伴生对像,但Date是java包中本来的我们既不能也不应该自己去完成他的伴生对像,这时找了很久才发现play中提供了可以<code>import</code>的地方,在build.sbt中添加</p>
+
+<p><code>routesImport += "utils.Binder._"</code></p>
+
+<p>运行继续出错,继续找问题,找到<code>routesImport</code>在<code>play.PlayImport.PlayKeys</code>下,所以继续在build.sbt最上方import下添加<code>import play.PlayImport.PlayKeys._</code></p>
+
+<h3>ok 问题解决!</h3>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -331,6 +395,10 @@ ms-dns 8.8.4.4</code></pre></p></li>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/02/09/zai-playframeworkzhong-tian-jia-java-dot-util-dot-datede-querystringbindable/">在playframework中添加java.util.Date的QueryStringBindable</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/02/02/swapfile-in-ec2/">Swapfile in Ec2</a>

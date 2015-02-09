@@ -4,7 +4,7 @@
   <title><![CDATA[Egret's Blog]]></title>
   <link href="http://lotusk.github.io/atom.xml" rel="self"/>
   <link href="http://lotusk.github.io/"/>
-  <updated>2015-02-03T09:01:06+08:00</updated>
+  <updated>2015-02-09T20:26:23+08:00</updated>
   <id>http://lotusk.github.io/</id>
   <author>
     <name><![CDATA[Egret]]></name>
@@ -12,6 +12,47 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[在playframework中添加java.util.Date的QueryStringBindable]]></title>
+    <link href="http://lotusk.github.io/blog/2015/02/09/zai-playframeworkzhong-tian-jia-java-dot-util-dot-datede-querystringbindable/"/>
+    <updated>2015-02-09T20:09:57+08:00</updated>
+    <id>http://lotusk.github.io/blog/2015/02/09/zai-playframeworkzhong-tian-jia-java-dot-util-dot-datede-querystringbindable</id>
+    <content type="html"><![CDATA[<h2>在playframework中添加java.util.Date的QueryStringBindable</h2>
+
+<hr />
+
+<h3>为了在play中让直接支持Date类型,比如</h3>
+
+<p><code>def setLastTime(date:Date)=Action{}</code></p>
+
+<p><code>GET    /user/setLastTime controllers.Application(date:java.util.Date)</code></p>
+
+<p>这时需要为Date类型添加QueryStringBindable[Date]的隐式转换,好先完成该转换代码.</p>
+
+<pre><code>object Binder{
+  implicit def queryDateBinder(implicit stringBinder: QueryStringBindable[String]) = new QueryStringBindable[Date] {
+    val sdf = new SimpleDateFormat("yyyy-MM-dd")
+
+    override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Date]] = stringBinder.bind(key, params).map {
+      strDate =>
+        strDate.right.map(sdf.parse(_))
+    }
+
+    override def unbind(key: String, date: Date): String = stringBinder.unbind(key , sdf.format(date))
+  }
+}</code></pre>
+
+
+<p>之前以为直接放在controller的pakcage object里就ok了,结果出错了才意识到该隐式转换是在play框架中调用的,所以能放隐式转换的地方只有一个方 java.util.Date的伴生对像,但Date是java包中本来的我们既不能也不应该自己去完成他的伴生对像,这时找了很久才发现play中提供了可以<code>import</code>的地方,在build.sbt中添加</p>
+
+<p><code>routesImport += "utils.Binder._"</code></p>
+
+<p>运行继续出错,继续找问题,找到<code>routesImport</code>在<code>play.PlayImport.PlayKeys</code>下,所以继续在build.sbt最上方import下添加<code>import play.PlayImport.PlayKeys._</code></p>
+
+<h3>ok 问题解决!</h3>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Swapfile in Ec2]]></title>
