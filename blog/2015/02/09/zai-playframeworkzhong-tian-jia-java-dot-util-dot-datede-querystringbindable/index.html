@@ -105,7 +105,13 @@
 
     override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Date]] = stringBinder.bind(key, params).map {
       strDate =>
-        strDate.right.map(sdf.parse(_))
+        strDate.right.flatMap{
+          d=>
+            Try(sdf.parse(d)) match {
+              case Success(e)=>Right(e)
+              case Failure(e)=>Left("unable to bind in valid date")
+            }
+        }
     }
 
     override def unbind(key: String, date: Date): String = stringBinder.unbind(key , sdf.format(date))

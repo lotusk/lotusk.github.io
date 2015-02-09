@@ -4,7 +4,7 @@
   <title><![CDATA[Egret's Blog]]></title>
   <link href="http://lotusk.github.io/atom.xml" rel="self"/>
   <link href="http://lotusk.github.io/"/>
-  <updated>2015-02-09T20:26:23+08:00</updated>
+  <updated>2015-02-09T21:47:22+08:00</updated>
   <id>http://lotusk.github.io/</id>
   <author>
     <name><![CDATA[Egret]]></name>
@@ -36,7 +36,13 @@
 
     override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Date]] = stringBinder.bind(key, params).map {
       strDate =>
-        strDate.right.map(sdf.parse(_))
+        strDate.right.flatMap{
+          d=>
+            Try(sdf.parse(d)) match {
+              case Success(e)=>Right(e)
+              case Failure(e)=>Left("unable to bind in valid date")
+            }
+        }
     }
 
     override def unbind(key: String, date: Date): String = stringBinder.unbind(key , sdf.format(date))
